@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Skill 15 – CanvasJS Charts (Node + socket.io)</title>
+</head>
+<body>
+  <h1>Stocks (Line) &amp; Smoke Temp (Spline)</h1>
+  <div id="chartContainerLine" style="height: 370px; width: 100%;"></div>
+  <div id="chartContainerSpline" style="height: 370px; width: 100%;"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+  <script>
+    const socket = io();
+
+    // line chart: stocks data (AMZN closing price)
+    var lineChart = new CanvasJS.Chart("chartContainerLine", {
+      animationEnabled: true,
+      theme: "light2",
+      title: { text: "AMZN Closing Price (from stocks-csv.txt)" },
+      data: [{
+        type: "line",
+        indexLabelFontSize: 16,
+        dataPoints: []
+      }]
+    });
+
+    socket.on("stocksData", function (points) {
+      lineChart.options.data[0].dataPoints = points;
+      lineChart.render();
+    });
+
+    // spline chart: smoke temp streamed
+    var dps = [];
+    var splineChart = new CanvasJS.Chart("chartContainerSpline", {
+      exportEnabled: true,
+      title: { text: "Smoke Sensor Temp – ID 1 (from smoke.txt, streamed)" },
+      data: [{
+        type: "spline",
+        markerSize: 0,
+        dataPoints: dps
+      }]
+    });
+    var dataLength = 50;
+
+    socket.on("smokePoint", function (point) {
+      dps.push({ x: point.x, y: point.y });
+      if (dps.length > dataLength) dps.shift();
+      splineChart.render();
+    });
+  </script>
+</body>
+</html>
