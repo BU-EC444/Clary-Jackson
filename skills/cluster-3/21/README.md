@@ -9,19 +9,11 @@ Date: YYYY-MM-DD
 Summarize what the skill is about and what you had to do to get it to work. 
 
 ### Evidence of Completion
-- Attach a photo or upload a video that captures a demonstration of
-  your solution. Include in the photo/video your BU ID.
 
-<p align="center">
-<img src="./images/ece444.png" width="50%">
-</p>
-<p align="center">
-Template for Including Graphics
-</p>
+![Skill 21 Evidence 1](images/Skill21_1.png)
 
-Or
+![Skill 21 Evidence 2](images/Skill21_2.png)
 
-- [Link to video demo](). Not to exceed 10s
 
 ### AI and Open Source Code Assertions
 
