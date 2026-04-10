@@ -1,0 +1,13 @@
+{
+  "name": "tfjs-node-arm-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minimal TensorFlow.js Node demo for ARM Macs",
+  "main": "train-and-predict.js",
+  "scripts": {
+    "start": "node train-and-predict.js"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0"
+  }
+}
