@@ -26,11 +26,6 @@ Proof for part 1
 Proof for part 2
 </p>
 
-
-Or
-
-- [Link to video demo](). Not to exceed 10s
-
 ### AI and Open Source Code Assertions
 
 - I have documented in my code readme.md and in my code any
