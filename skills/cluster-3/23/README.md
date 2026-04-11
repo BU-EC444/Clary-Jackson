@@ -19,6 +19,14 @@ Summarize what the skill is about and what you had to do to get it to work.
 Template for Including Graphics
 </p>
 
+<p align="center">
+<img src="./images/Screenshot 2026-04-10 at 22.46.19.png" width="50%">
+</p>
+<p align="center">
+Template for Including Graphics
+</p>
+
+
 Or
 
 - [Link to video demo](). Not to exceed 10s
