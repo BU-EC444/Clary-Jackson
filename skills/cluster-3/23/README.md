@@ -13,7 +13,7 @@ Summarize what the skill is about and what you had to do to get it to work.
   your solution. Include in the photo/video your BU ID.
 
 <p align="center">
-<img src="./images/ece444.png" width="50%">
+<img src="./images/Screenshot 2026-04-10 at 20.59.06.png" width="50%">
 </p>
 <p align="center">
 Template for Including Graphics
