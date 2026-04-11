@@ -16,14 +16,14 @@ Summarize what the skill is about and what you had to do to get it to work.
 <img src="./images/Screenshot 2026-04-10 at 20.59.06.png" width="50%">
 </p>
 <p align="center">
-Template for Including Graphics
+Proof for part 1
 </p>
 
 <p align="center">
 <img src="./images/Screenshot 2026-04-10 at 22.46.19.png" width="50%">
 </p>
 <p align="center">
-Template for Including Graphics
+Proof for part 2
 </p>
 
 
