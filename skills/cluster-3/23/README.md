@@ -1,16 +1,15 @@
 #  Skill Name
 
-Author: FirstName LastName
+Author: Jackson Clary
 
-Date: YYYY-MM-DD
+Date: 2026-04-10
 
 ### Summary
 
-Summarize what the skill is about and what you had to do to get it to work. 
+For this skill, I set up a UDP server on the ESP32 using ESP-IDF. I configured the project, flashed the firmware, and got the board to receive UDP packets from a host and echo them back.
+To test it, I wrote a Node.js UDP client and checked the serial monitor to make sure everything was working. The captured output shows the ESP32 and my computer successfully sending packets back and forth.
 
 ### Evidence of Completion
-- Attach a photo or upload a video that captures a demonstration of
-  your solution. Include in the photo/video your BU ID.
 
 <p align="center">
 <img src="./images/Screenshot 2026-04-10 at 20.59.06.png" width="50%">
