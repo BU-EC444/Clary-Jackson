@@ -6,7 +6,8 @@ Date: 2026-04-12
 
 ### Summary
 
-Summarize what the skill is about and what you had to do to get it to work.
+For this skill, I set up the ESP32 as a WiFi station (STA) using ESP-IDF's official station example. The firmware brings up the WiFi STA interface, registers handlers for WIFI_EVENT and IP_EVENT_STA_GOT_IP, and waits on a FreeRTOS event group until the board gets an IP or hits the retry limit.
+To get it working, I set the Example Connection Configuration in menuconfig (SSID, password, auth options), then flashed the image and checked the serial monitor to confirm it associated with the AP and printed "got ip" with a valid address.
 
 ### Evidence of Completion
 
