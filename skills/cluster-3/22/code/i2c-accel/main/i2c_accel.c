@@ -5,12 +5,14 @@
   Emily Lam, Aug 2019 for BU EC444
 */
 #include <stdio.h>
+#include <stdbool.h>
 #include <math.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/i2c.h"
 #include "esp_err.h"
 #include "./ADXL343.h"
+#include "lidar.h"
 
 // Master I2C
 #define I2C_EXAMPLE_MASTER_SCL_IO          22   // gpio number for i2c clk
@@ -28,6 +30,9 @@
 
 // ADXL343
 #define SLAVE_ADDR                         ADXL343_ADDRESS // 0x53
+#define LIDAR_BOOT_DELAY_MS                25
+
+static bool lidar_ready = false;
 
 // Function to initiate i2c -- note the MSB declaration!
 static void i2c_master_init(){
@@ -63,6 +68,12 @@ static void i2c_master_init(){
     return;
   }
   printf("- initialized: yes\n");
+
+  err = i2c_set_timeout(i2c_master_port, 0xFFFFF);
+  if (err != ESP_OK) {
+    printf("- set timeout failed: %s\n", esp_err_to_name(err));
+    return;
+  }
 
   // Data in MSB mode
   err = i2c_set_data_mode(i2c_master_port, I2C_DATA_MODE_MSB_FIRST, I2C_DATA_MODE_MSB_FIRST);
@@ -200,7 +211,6 @@ void getAccel(float * xp, float *yp, float *zp) {
   *xp = read16(ADXL343_REG_DATAX0) * ADXL343_MG2G_MULTIPLIER * SENSORS_GRAVITY_STANDARD;
   *yp = read16(ADXL343_REG_DATAY0) * ADXL343_MG2G_MULTIPLIER * SENSORS_GRAVITY_STANDARD;
   *zp = read16(ADXL343_REG_DATAZ0) * ADXL343_MG2G_MULTIPLIER * SENSORS_GRAVITY_STANDARD;
- printf("X: %.2f \t Y: %.2f \t Z: %.2f\n", *xp, *yp, *zp);
 }
 
 // function to print roll and pitch
@@ -216,8 +226,27 @@ static void test_adxl343() {
   while (1) {
     float xVal, yVal, zVal;
     getAccel(&xVal, &yVal, &zVal);
-    calcRP(xVal, yVal, zVal);
-    vTaskDelay(500 / portTICK_PERIOD_MS);
+    float accel_mag = sqrtf((xVal * xVal) + (yVal * yVal) + (zVal * zVal));
+
+    int lidar_value_cm = -1;
+    if (lidar_ready) {
+      uint16_t distance_cm = 0;
+      esp_err_t ret = lidar_take_range();
+      if (ret == ESP_OK) {
+        ret = lidar_wait_for_ready();
+      }
+      if (ret == ESP_OK) {
+        ret = lidar_read_distance(&distance_cm);
+      }
+
+      if (ret == ESP_OK) {
+        lidar_value_cm = (int)distance_cm;
+      }
+    }
+
+    /* Single parseable UART line for Node: lidar_cm accel_mag */
+    printf("%d %.3f\n", lidar_value_cm, accel_mag);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
 
@@ -319,6 +348,15 @@ void app_main() {
 
   // Enable measurements
   writeRegister(ADXL343_REG_POWER_CTL, 0x08);
+
+  vTaskDelay(pdMS_TO_TICKS(LIDAR_BOOT_DELAY_MS));
+  esp_err_t lidar_err = lidar_configure(2);
+  if (lidar_err == ESP_OK) {
+    lidar_ready = true;
+    printf("- LIDAR configured: yes\n");
+  } else {
+    printf("- LIDAR configured: no (%s)\n", esp_err_to_name(lidar_err));
+  }
 
   // Create task to poll ADXL343
   xTaskCreate(test_adxl343,"test_adxl343", 4096, NULL, 5, NULL);

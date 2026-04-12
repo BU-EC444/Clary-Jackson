@@ -1,0 +1,14 @@
+{
+  "name": "skill-22-serial-canvas",
+  "version": "1.0.0",
+  "description": "Read ESP32 serial sensor data, stream with Socket.IO, and plot with CanvasJS",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "serialport": "^13.0.0",
+    "socket.io": "^4.8.3"
+  }
+}

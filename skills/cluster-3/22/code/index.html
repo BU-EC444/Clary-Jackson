@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skill 22 Live Sensors</title>
+</head>
+<body>
+  <h1>Skill 22: LIDAR + Accelerometer Magnitude</h1>
+  <p id="statusText">Connecting to server...</p>
+  <div id="chartContainer" style="height: 420px; width: 100%;"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+  <script>
+    const socket = io();
+    const statusText = document.getElementById("statusText");
+    const lidarPoints = [];
+    const accelPoints = [];
+    const maxPoints = 60;
+
+    const chart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: false,
+      theme: "light2",
+      zoomEnabled: true,
+      title: { text: "Live Sensor Streams" },
+      axisX: {
+        title: "Time",
+        valueFormatString: "HH:mm:ss"
+      },
+      axisY: {
+        title: "LIDAR Distance (cm)",
+        includeZero: false
+      },
+      axisY2: {
+        title: "Accel Magnitude (m/s²)",
+        includeZero: false
+      },
+      legend: {
+        cursor: "pointer",
+        itemclick: function (e) {
+          e.dataSeries.visible = (typeof e.dataSeries.visible === "undefined") ? false : !e.dataSeries.visible;
+          chart.render();
+        }
+      },
+      data: [
+        {
+          type: "line",
+          name: "LIDAR (cm)",
+          showInLegend: true,
+          xValueType: "dateTime",
+          dataPoints: lidarPoints
+        },
+        {
+          type: "line",
+          axisYType: "secondary",
+          name: "Accel |a| (m/s²)",
+          showInLegend: true,
+          xValueType: "dateTime",
+          dataPoints: accelPoints
+        }
+      ]
+    });
+
+    // Render immediately so axes/title are visible before first sample.
+    chart.render();
+    statusText.textContent = "Connected. Waiting for sensor data...";
+
+    socket.on("connect", function () {
+      statusText.textContent = "Connected. Waiting for sensor data...";
+    });
+
+    socket.on("disconnect", function () {
+      statusText.textContent = "Disconnected from server.";
+    });
+
+    socket.on("sensorData", function (sample) {
+      const t = Number(sample.t);
+      const lidarCm = Number(sample.lidarCm);
+      const accelMag = Number(sample.accelMag);
+      if (!Number.isFinite(t) || !Number.isFinite(lidarCm) || !Number.isFinite(accelMag)) return;
+
+      lidarPoints.push({ x: new Date(t), y: lidarCm });
+      accelPoints.push({ x: new Date(t), y: accelMag });
+
+      while (lidarPoints.length > maxPoints) lidarPoints.shift();
+      while (accelPoints.length > maxPoints) accelPoints.shift();
+
+      statusText.textContent = "Receiving live sensor data.";
+      chart.render();
+    });
+  </script>
+</body>
+</html>
