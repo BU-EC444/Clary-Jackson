@@ -1,12 +1,12 @@
 #  Skill Name
 
-Author: FirstName LastName
+Author: Jackson Clary
 
-Date: YYYY-MM-DD
+Date: 2026-04-12
 
 ### Summary
 
-Summarize what the skill is about and what you had to do to get it to work. 
+Summarize what the skill is about and what you had to do to get it to work.
 
 ### Evidence of Completion
 
