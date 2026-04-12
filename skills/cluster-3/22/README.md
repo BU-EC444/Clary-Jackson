@@ -6,22 +6,17 @@ Date: 2026-04-12
 
 ### Summary
 
-Summarize what the skill is about and what you had to do to get it to work. 
+This skill streams two live ESP32 sensor values (LIDAR distance and accelerometer magnitude) over UART to a Node.js app, then relays them to a browser using Socket.IO for real-time CanvasJS plotting.  
+The Node app also writes each sample to a local CSV file (`code/sensor_log.csv`) with a server timestamp for persistent logging.
 
 ### Evidence of Completion
-- Attach a photo or upload a video that captures a demonstration of
-  your solution. Include in the photo/video your BU ID.
 
 <p align="center">
-<img src="./images/ece444.png" width="50%">
+<img src="./images/screenshot2.png" width="50%">
 </p>
 <p align="center">
-Template for Including Graphics
+Photo Evidence
 </p>
-
-Or
-
-- [Link to video demo](). Not to exceed 10s
 
 ### AI and Open Source Code Assertions
 
@@ -29,6 +24,14 @@ Or
 software that we have adopted from elsewhere
 - I used AI for coding and this is documented in my code as
 indicated by comments "AI generated" 
+
+### How to Run
+
+1. Build/flash in `code/i2c-accel`.
+2. In `code/`, run:
+   - `npm install`
+   - `SERIAL_PORT=/dev/cu.usbserial-XXXX npm start`
+3. Open `http://localhost:3000`.
 
 
 
