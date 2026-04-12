@@ -1,8 +1,8 @@
-#  Skill Name
+#  Node.js to CanvasJS and File
 
-Author: FirstName LastName
+Author: Jackson Clary
 
-Date: YYYY-MM-DD
+Date: 2026-04-12
 
 ### Summary
 
